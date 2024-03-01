@@ -1,0 +1,14 @@
+arrival time is when computer b receives the package
+the important thing is to keep track of when the package comes out
+implement an event queue - future event list
+list type structure - ordering needs to be preserved
+the one you pull out first has to be the one with the least arrival time
+make sure the queue supports event cancellation
+if packets get lost you remove it from the queue
+
+timers
+suppose you want to simulate the sending of packets between comp a and b every few seconds
+in real time of network, you would set a hardware Timer that would call a callback sensor every few mins
+there is nothing in between events
+Timer start- shove event into the list
+when it reaches the Timer ends
