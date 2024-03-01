@@ -29,20 +29,28 @@ public class ArrayEventList implements FutureEventList {
             doubleCapacity(arraySize);
         }
         for (int i = 0; i < arraySize; i++) {
-            if (eventArray[i] == null && i == 0) {
+            if (eventArray[i] == null) {
                 eventArray[i] = e;
+                break;
             }
-            if (eventArray[i] != null && e.getArrivalTime() < eventArray[i].getArrivalTime()) {
-                for (int j = arraySize - 1; j > i; j--) {
-                    if (eventArray[j - 1] == null) {
-                        continue;
-                    }
-                    eventArray[j] = eventArray[j - 1];
-                }
-                eventArray[i] = e;
-            }
+        }
+        for (int i = 0; i < arraySize; i++) {
             System.out.println(eventArray[i]);
         }
+        System.out.println("done");
+
+//        for (int i = 0; i < arraySize; i++) {
+//            if (eventArray[i] != null && e.getArrivalTime() < eventArray[i].getArrivalTime()) {
+//                for (int j = arraySize - 1; j > i; j--) {
+//                    if (eventArray[j - 1] == null) {
+//                        continue;
+//                    }
+//                    eventArray[j] = eventArray[j - 1];
+//                }
+//                eventArray[i] = e;
+//            }
+//            System.out.println(eventArray[i]);
+//        }
     }
 
     @Override
