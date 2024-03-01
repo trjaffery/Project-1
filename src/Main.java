@@ -8,7 +8,7 @@ public class Main {
 
         ArrayEventList event_array = new ArrayEventList();
 
-        FileInputStream fileByteStream = new FileInputStream("events.txt");
+        FileInputStream fileByteStream = new FileInputStream("src/events.txt");
         Scanner fileScanner = new Scanner(fileByteStream);
 
         while (fileScanner.hasNext()) {
@@ -20,7 +20,7 @@ public class Main {
                 System.out.println(timer);
             }
             else if (command.equals("R")) {
-                event_array.removeFirst();
+
             }
         }
     }

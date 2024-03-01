@@ -1,11 +1,12 @@
 public class Timer implements Event {
-    private static int unique_id = 0;
+    private static int unique_id = -1;
     private int arrival_time;
-    private int insertion_time;
+    private int insertion_time = 0;
     private int sim_time;
 
     // arrival time = insertion time + duration
     public Timer (int timer_duration) {
+        arrival_time = timer_duration + insertion_time;
         unique_id++;
     }
 
@@ -14,7 +15,7 @@ public class Timer implements Event {
     }
 
     public int getInsertionTime() {
-
+        return 0;
     }
 
 
@@ -24,7 +25,7 @@ public class Timer implements Event {
     }
 
     public int getArrivalTime() {
-
+        return 0;
     }
 
     public void cancel (int currentTime) {
