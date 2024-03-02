@@ -1,75 +1,108 @@
 public class ArrayEventList implements FutureEventList {
     private Event[] eventArray = new Event[5];
-    private int sim_time = 0;
+    int eventArraySize = eventArray.length;
+    private int size = 0;
+    private int simTime = 0;
 
 
     public Event removeFirst(Event e) {
-
-        int sizeArray = eventArray.length;
+        if (e != eventArray[0]) {
+            return null;
+        }
         Event removedEvent = eventArray[0];
-        Event[] copy_event_array = new Event[sizeArray];
-
-        System.arraycopy(eventArray, 1, copy_event_array, 0, sizeArray);
-        System.arraycopy(copy_event_array, 0, eventArray, 0, sizeArray);
+        for (int i = 0; i < eventArraySize; i++) {
+            if (i == eventArraySize - 1) {
+                eventArray[i] = null;
+                break;
+            }
+            eventArray[i] = eventArray[i + 1];
+        }
+        size--;
+        simTime = removedEvent.getArrivalTime();
         return removedEvent;
     }
 
-    public void doubleCapacity(int arraySize) {
-        Event[] copy_event_array = new Event[arraySize];
-        System.arraycopy(eventArray, 0, copy_event_array, 0, arraySize);
-        eventArray = new Event[arraySize * 2];
-        System.arraycopy(copy_event_array, 0, eventArray, 0, arraySize);
+    private void doubleCapacity() {
+        Event[] copy_event_array = new Event[eventArraySize];
+        System.arraycopy(eventArray, 0, copy_event_array, 0, eventArraySize);
+        eventArray = new Event[eventArraySize * 2];
+        System.arraycopy(copy_event_array, 0, eventArray, 0, eventArraySize);
     }
     @Override
     public void insert(Event e) {
         // check for if the array is filled (i.e. if the last element is not null)
-        // if it's not null, then double the capacitance of the array
-        int arraySize = eventArray.length;
-        if (eventArray[arraySize - 1] != null) {
-            doubleCapacity(arraySize);
+        // if size = capacity, then double the capacitance of the array
+        if (size == capacity()) {
+            doubleCapacity();
+            System.out.println("doubled");
+            eventArraySize *= 2;
         }
-        for (int i = 0; i < arraySize; i++) {
+        for (int i = 0; i < eventArraySize; i++) {
+            // if no timers in array or timer is largest
             if (eventArray[i] == null) {
                 eventArray[i] = e;
                 break;
             }
-        }
-        for (int i = 0; i < arraySize; i++) {
-            System.out.println(eventArray[i]);
-        }
-        System.out.println("done");
+            // if timer is larger than the timer in the ith position, continue
+            if (eventArray[i].getArrivalTime() < e.getArrivalTime()) {
+                continue;
+            }
+            else {
+                // shift every item in the array by 1 to the right and insert e into the ith position
+                for (int j = eventArraySize - 2; j >= i; j--) {
 
-//        for (int i = 0; i < arraySize; i++) {
-//            if (eventArray[i] != null && e.getArrivalTime() < eventArray[i].getArrivalTime()) {
-//                for (int j = arraySize - 1; j > i; j--) {
-//                    if (eventArray[j - 1] == null) {
-//                        continue;
-//                    }
-//                    eventArray[j] = eventArray[j - 1];
-//                }
-//                eventArray[i] = e;
-//            }
-//            System.out.println(eventArray[i]);
-//        }
+                    if (eventArray[j] != null) {
+                        eventArray[j + 1] = eventArray[j];
+                    }
+                }
+                eventArray[i] = e;
+                break;
+            }
+        }
+        e.setInsertionTime(simTime);
+        System.out.println(e);
+        size++;
     }
 
     @Override
     public boolean remove(Event e) {
-        // recursive binary search
-
+        int index = binarySearch(e, 0, size - 1);
+        if (index == -1) {
+            return false;
+        }
+        for (int i = index; i < size - 1; i++) {
+            eventArray[i] = eventArray[i + 1];
+        }
+        size--;
         return true;
     }
 
+    private int binarySearch(Event e, int left, int right) {
+        if (right < left) {
+            return -1;
+        }
+        int mid = left + (right - left) / 2;
+        if (eventArray[mid] == e) {
+            return mid;
+        }
+        else if (eventArray[mid].getArrivalTime() < e.getArrivalTime()) {
+            return binarySearch(e, mid + 1, right);
+        }
+        else {
+            return binarySearch(e, left, mid - 1);
+        }
+    }
+
     public int size() {
-        return 0;
+        return size;
     }
 
     public int capacity() {
-        return 0;
+        return eventArraySize;
     }
 
     @Override
     public int getSimulationTime() {
-        return sim_time;
+        return simTime;
     }
 }

@@ -1,39 +1,40 @@
 public class Timer implements Event {
-    private static int unique_id = -1;
+    private final int uniqueId;
+    private static int num_timers = -1;
     private int arrival_time;
-    private int insertion_time = 0;
-    private int sim_time;
+    private int duration;
+    private int insertion_time = -1;
 
     // arrival time = insertion time + duration
     public Timer (int timer_duration) {
-        arrival_time = timer_duration + insertion_time;
-        unique_id++;
+        duration = timer_duration;
+        num_timers++;
+        uniqueId = num_timers;
     }
 
     public void setInsertionTime(int currentTime) {
-
+        insertion_time = currentTime;
+        arrival_time = duration + currentTime;
     }
 
     public int getInsertionTime() {
-        return 0;
+        return insertion_time;
     }
 
-
-
     public void handle () {
-        System.out.println("Timer " + unique_id + "handled (arrival time: " + arrival_time + ")");
+        System.out.println("Timer " + uniqueId + " handled (arrival time: " + arrival_time + ")");
     }
 
     public int getArrivalTime() {
-        return 0;
+        return arrival_time;
     }
 
     public void cancel (int currentTime) {
-        System.out.println("Timer " + unique_id + " canceled at time: " + currentTime);
+        System.out.println("Timer " + uniqueId + " canceled at time: " + currentTime);
     }
 
     public String toString() {
-        return "- Timer " + unique_id + "(insertion time: " + insertion_time + ", arrival time: " + arrival_time + ")";
+        return "- Timer " + uniqueId + " (insertion time: " + insertion_time + ", arrival time: " + arrival_time + ")";
     }
 
 }
