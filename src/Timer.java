@@ -2,7 +2,7 @@ public class Timer implements Event {
     private final int uniqueId;
     private static int num_timers = -1;
     private int arrival_time;
-    private int duration;
+    private final int duration;
     private int insertion_time = -1;
 
     // arrival time = insertion time + duration

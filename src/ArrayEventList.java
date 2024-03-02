@@ -58,38 +58,43 @@ public class ArrayEventList implements FutureEventList {
                 break;
             }
         }
-        for (int i = 0; i < eventArraySize; i++) {
-            System.out.println(eventArray[i]);
-        }
         e.setInsertionTime(simTime);
-        //System.out.println(e);
+        System.out.println(e);
         size++;
     }
 
     @Override
     public boolean remove(Event e) {
-        int index = binarySearch(e, 0, size - 1);
+        // calls private binary search method passing in bounds of array
+        int index = binarySearch(e, 0, eventArraySize - 1);
+        // if it returns as -1 then the Event was not found
         if (index == -1) {
             return false;
         }
-        for (int i = index; i < size - 1; i++) {
+        // closes the gap up in the array after removal
+        for (int i = index; i < eventArraySize - 1; i++) {
             eventArray[i] = eventArray[i + 1];
         }
-        size--;
+        size--; // lowers the size field
         return true;
     }
 
     private int binarySearch(Event e, int left, int right) {
+        // Timer was not found
         if (right < left) {
             return -1;
         }
+        // new mid value
         int mid = left + (right - left) / 2;
+        // found
         if (eventArray[mid] == e) {
             return mid;
         }
+        // search upper half
         else if (eventArray[mid].getArrivalTime() < e.getArrivalTime()) {
             return binarySearch(e, mid + 1, right);
         }
+        // search lower half
         else {
             return binarySearch(e, left, mid - 1);
         }
