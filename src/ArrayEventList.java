@@ -34,7 +34,6 @@ public class ArrayEventList implements FutureEventList {
         // if size = capacity, then double the capacitance of the array
         if (size == capacity()) {
             doubleCapacity();
-            System.out.println("doubled");
             eventArraySize *= 2;
         }
         for (int i = 0; i < eventArraySize; i++) {
@@ -59,8 +58,11 @@ public class ArrayEventList implements FutureEventList {
                 break;
             }
         }
+        for (int i = 0; i < eventArraySize; i++) {
+            System.out.println(eventArray[i]);
+        }
         e.setInsertionTime(simTime);
-        System.out.println(e);
+        //System.out.println(e);
         size++;
     }
 

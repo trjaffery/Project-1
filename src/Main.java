@@ -24,19 +24,21 @@ public class Main {
             }
             else if (command.equals("R")) {
                 Timer removed_timer = timerArray.getFirst();
-                eventList.removeFirst(removed_timer);
+                System.out.println(removed_timer);
                 if (removed_timer != null) {
+                    eventList.removeFirst(removed_timer);
                     removed_timer.handle();
+                    timerArray.remove(removed_timer);
                     currentTime = removed_timer.getArrivalTime(); // updates sim time
                 }
             }
             else if (command.equals("C")) {
-                int timerToCancel = fileScanner.nextInt();
-                Timer timerCanceled = timerArray.get(timerToCancel);
+                int timerIndex = fileScanner.nextInt();
+                Timer timerCanceled = timerArray.get(timerIndex);
                 if (timerCanceled != null) {
                     eventList.remove(timerCanceled);
                     timerCanceled.cancel(currentTime);
-                    for (int i = timerToCancel + 1; i < timerArray.size(); i++) {
+                    for (int i = timerIndex + 1; i < timerArray.size(); i++) {
                         Timer nextTimer = timerArray.get(i);
                         nextTimer.setInsertionTime(currentTime);
                     }
