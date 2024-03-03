@@ -1,3 +1,4 @@
+professor advice:
 arrival time is when computer b receives the package
 the important thing is to keep track of when the package comes out
 implement an event queue - future event list

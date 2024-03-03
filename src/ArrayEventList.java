@@ -1,15 +1,18 @@
 public class ArrayEventList implements FutureEventList {
-    private Event[] eventArray = new Event[5];
-    int eventArraySize = eventArray.length;
-    private int size = 0;
-    private int simTime = 0;
+    private Event[] eventArray = new Event[5]; // main array which will hold all the events
+    private int eventArraySize = eventArray.length; // holds the current array size
+    private int size = 0; // size of future event list
+    private int simTime = 0; // maintains sim time
 
 
+    // gets called when "R" is in the file, removes the first event and makes sure that the event passed
+    // in is the first event in the array, returns null if not
     public Event removeFirst(Event e) {
         if (e != eventArray[0]) {
             return null;
         }
-        Event removedEvent = eventArray[0];
+        Event removedEvent = eventArray[0]; // holds the removed event to later return it
+        // erases the removed event and moves the other events over
         for (int i = 0; i < eventArraySize; i++) {
             if (i == eventArraySize - 1) {
                 eventArray[i] = null;
@@ -17,17 +20,20 @@ public class ArrayEventList implements FutureEventList {
             }
             eventArray[i] = eventArray[i + 1];
         }
-        size--;
-        simTime = removedEvent.getArrivalTime();
+        size--; // reduces size
+        simTime = removedEvent.getArrivalTime(); // updates sim time
         return removedEvent;
     }
 
+    // gets called everytime the array is full, doubles the array
     private void doubleCapacity() {
         Event[] copy_event_array = new Event[eventArraySize];
         System.arraycopy(eventArray, 0, copy_event_array, 0, eventArraySize);
         eventArray = new Event[eventArraySize * 2];
         System.arraycopy(copy_event_array, 0, eventArray, 0, eventArraySize);
     }
+
+    // inserts the timer into the list based on arrival time, gets called when "I" is in the file
     @Override
     public void insert(Event e) {
         // check for if the array is filled (i.e. if the last element is not null)
@@ -66,7 +72,7 @@ public class ArrayEventList implements FutureEventList {
     @Override
     public boolean remove(Event e) {
         // calls private binary search method passing in bounds of array
-        int index = binarySearch(e, 0, eventArraySize - 1);
+        int index = binarySearch(e, 0, size - 1);
         // if it returns as -1 then the Event was not found
         if (index == -1) {
             return false;
@@ -100,14 +106,17 @@ public class ArrayEventList implements FutureEventList {
         }
     }
 
+    // returns size to print to the screen
     public int size() {
         return size;
     }
 
+    // returns capacity to print to the screen
     public int capacity() {
         return eventArraySize;
     }
 
+    // returns simulation time
     @Override
     public int getSimulationTime() {
         return simTime;
